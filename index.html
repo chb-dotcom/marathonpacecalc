@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marathon Pace Calculator – Predict Your Finish Time & Splits</title>
+  <meta name="description" content="Free marathon pace calculator. Enter your target pace or a recent race result to predict your finish time and splits for 5K, 10K, half marathon, and marathon distances.">
+  <meta name="keywords" content="marathon pace calculator, running pace calculator, race time predictor, half marathon pace, 5k time predictor, marathon finish time">
+  <meta property="og:title" content="Marathon Pace Calculator – Predict Your Finish Time">
+  <meta property="og:description" content="Free tool to calculate your marathon pace, finish time and splits. Works for 5K, 10K, half marathon and full marathon.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.marathonpacecalc.com">
+  <link rel="canonical" href="https://www.marathonpacecalc.com">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20150%20150%22><path%20fill=%22none%22%20d=%22M0,0H150V150H0V0Z%22/><path%20fill=%22%23ffd261%22%20d=%22M141.05,118.03c0,7.88-10.05,15.33-20.7,15.33-22.66,0-31.81-22.12-31.81-31.35,.2-12.94,13.07-32.49,17.03-38.45,3.24-4.03-1.09-6.01-3.52-.98-.41,.59-18.14,29.4-18.52,30-8.65,12.84-27.1,16.13-34.9,5.37-5.21-8.61,10.05-24.86,14.26-34.61,3.08-4.02-1.39-5.59-3.63-.8-9.58,11.91-16.93,40.13-34.41,41.61-10.32,0-17.82-10.76-17.82-25.61s7.69-22.3,14.94-22.3c5.21-.06,4.32,7.77,9.46,7.81,15.63-4.69,14.33-42.8,42-44.81,11.81,.18,16.13,9.24,13.73,17.99-1.58,4.72-18.44,39.68-20.92,43.82-1.11,1.84-.57,2.95,1,3.15,4.16-4.1,19.34-36.43,25.73-45.97,6.03-10.35,13.73-16.35,22.45-16.1,18.31-.38,19.41,18.77,11.63,31.98-8.8,18.66-15.52,37.08,7.49,53.32,3.94,2.5,6.53,4.14,6.53,10.59h-.02Z%22/></svg>">
+
+  <!-- Google AdSense: replace ca-pub-XXXXXXXXXX after approval -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --yellow: #F5C518;
+      --yellow-dark: #d4a900;
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --surface2: #222;
+      --border: rgba(255,255,255,0.08);
+      --border-mid: rgba(255,255,255,0.14);
+      --text: #f0f0f0;
+      --text-secondary: #999;
+      --text-tertiary: #555;
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+    .ad-top { background: #111; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; padding: 10px; min-height: 90px; color: var(--text-tertiary); font-size: 12px; }
+    .page { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    header { margin-bottom: 2rem; }
+    .brand { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--yellow); margin-bottom: 6px; }
+    h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 700; line-height: 1; margin-bottom: 8px; color: var(--text); }
+    .tagline { font-size: 15px; color: var(--text-secondary); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; }
+    .tab { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border-mid); background: transparent; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; }
+    .tab.active { background: var(--yellow); color: #000; border-color: var(--yellow); font-weight: 600; }
+    .dist-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 1.25rem; }
+    .dist-btn { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; padding: 8px 4px; border-radius: var(--radius-sm); border: 1px solid var(--border-mid); background: transparent; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; text-align: center; }
+    .dist-btn.active { background: var(--yellow); color: #000; border-color: var(--yellow); }
+    .field-label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+    .field { margin-bottom: 1rem; }
+    .input-row { display: flex; align-items: center; gap: 6px; }
+    .input-row input, .input-row select { font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 9px 10px; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); background: var(--surface2); color: var(--text); outline: none; transition: border 0.15s; }
+    .input-row input:focus, .input-row select:focus { border-color: var(--yellow); }
+    .input-row input { width: 64px; }
+    .input-row select { flex: 1; }
+    .input-row select option { background: var(--surface2); color: var(--text); }
+    .unit { font-size: 13px; color: var(--text-tertiary); white-space: nowrap; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+    .btn-calc { width: 100%; font-family: 'Barlow Condensed', sans-serif; font-size: 19px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 14px; border-radius: var(--radius-sm); border: none; background: var(--yellow); color: #000; cursor: pointer; transition: background 0.15s, transform 0.1s; margin-top: 0.5rem; }
+    .btn-calc:hover { background: var(--yellow-dark); }
+    .btn-calc:active { transform: scale(0.99); }
+    .error { display: none; font-size: 13px; color: #ff6b6b; padding: 6px 0; }
+    .error.show { display: block; }
+    .results { display: none; }
+    .results.show { display: block; }
+    .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+    .res-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 4px; }
+    .res-time { font-family: 'Barlow Condensed', sans-serif; font-size: 58px; font-weight: 700; color: var(--yellow); line-height: 1; margin-bottom: 4px; }
+    .res-pace { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .splits-title { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+    .splits { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); gap: 8px; margin-bottom: 1.5rem; }
+    .split { background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 12px; border: 1px solid var(--border); }
+    .split-dist { font-size: 11px; color: var(--text-tertiary); margin-bottom: 2px; }
+    .split-time { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 600; color: var(--text); }
+    .tip { background: #1a1700; border-left: 3px solid var(--yellow); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 14px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .tip strong { color: var(--text); font-weight: 500; }
+    .ad-inline { background: var(--surface); border: 1px dashed var(--border-mid); border-radius: var(--radius); min-height: 250px; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); font-size: 12px; margin: 1rem 0; }
+    .info { margin-top: 3rem; }
+    .info h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
+    .info p { font-size: 15px; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.7; }
+    .info h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text); }
+    footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-tertiary); text-align: center; }
+    footer a { color: var(--text-tertiary); text-decoration: none; }
+    footer a:hover { color: var(--yellow); }
+    @media (max-width: 480px) { h1 { font-size: 34px; } .res-time { font-size: 48px; } .two-col { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="ad-top"><span>Advertisement</span></div>
+
+  <div class="page">
+    <header>
+      <p class="brand">marathonpacecalc.com</p>
+      <h1>Marathon Pace Calculator</h1>
+      <p class="tagline">Predict your finish time and splits for any race distance — free and instant.</p>
+    </header>
+
+    <div class="card">
+      <div class="tabs">
+        <button class="tab active" onclick="setMode('pace')">Calculate pace</button>
+        <button class="tab" onclick="setMode('predict')">Predict from race</button>
+      </div>
+
+      <div id="mode-pace">
+        <label class="field-label">Target distance</label>
+        <div class="dist-grid">
+          <button class="dist-btn" onclick="selectDist(this,'5K',5)">5K</button>
+          <button class="dist-btn" onclick="selectDist(this,'10K',10)">10K</button>
+          <button class="dist-btn" onclick="selectDist(this,'Half',21.0975)">Half</button>
+          <button class="dist-btn active" onclick="selectDist(this,'Marathon',42.195)">Marathon</button>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label class="field-label">Target pace</label>
+            <div class="input-row">
+              <input type="number" id="p-min" min="2" max="20" placeholder="5">
+              <span class="unit">:</span>
+              <input type="number" id="p-sec" min="0" max="59" placeholder="30">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Per</label>
+            <div class="input-row">
+              <select id="p-unit">
+                <option value="km">kilometre</option>
+                <option value="mi">mile</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="error" id="err-pace">Please enter a valid pace (e.g. 5 min 30 sec).</div>
+        <button class="btn-calc" onclick="calcPace()">Calculate finish time →</button>
+      </div>
+
+      <div id="mode-predict" style="display:none">
+        <label class="field-label">Previous race distance</label>
+        <div class="dist-grid">
+          <button class="dist-btn active" onclick="selectPrev(this,5)">5K</button>
+          <button class="dist-btn" onclick="selectPrev(this,10)">10K</button>
+          <button class="dist-btn" onclick="selectPrev(this,21.0975)">Half</button>
+          <button class="dist-btn" onclick="selectPrev(this,42.195)">Marathon</button>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label class="field-label">Your finish time</label>
+            <div class="input-row">
+              <input type="number" id="r-h" min="0" max="9" placeholder="0" title="hours">
+              <span class="unit">h</span>
+              <input type="number" id="r-m" min="0" max="59" placeholder="25" title="minutes">
+              <span class="unit">m</span>
+              <input type="number" id="r-s" min="0" max="59" placeholder="00" title="seconds">
+              <span class="unit">s</span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Predict for distance</label>
+            <div class="input-row">
+              <select id="target-dist">
+                <option value="5">5K</option>
+                <option value="10">10K</option>
+                <option value="21.0975">Half marathon</option>
+                <option value="42.195" selected>Marathon</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="error" id="err-predict">Please enter a valid race time.</div>
+        <button class="btn-calc" onclick="calcPredict()">Predict my time →</button>
+      </div>
+
+      <div class="results" id="results">
+        <div class="divider"></div>
+        <p class="res-label">Predicted finish time</p>
+        <p class="res-time" id="res-time">—</p>
+        <p class="res-pace" id="res-pace">—</p>
+        <p class="splits-title">Checkpoint splits</p>
+        <div class="splits" id="splits-grid"></div>
+        <div class="tip" id="res-tip"></div>
+      </div>
+    </div>
+
+    <div class="ad-inline"><span>Advertisement</span></div>
+
+    <section class="info">
+      <h2>How to use this calculator</h2>
+      <p>Choose between two modes: Calculate pace if you know how fast you want to run and need your finish time, or Predict from race if you have a recent race result and want to know how that translates to a different distance.</p>
+      <h3>Calculate pace mode</h3>
+      <p>Select your target distance, enter your goal pace in minutes and seconds per kilometre or mile, and the calculator will show your predicted finish time along with checkpoint splits so you know exactly where you should be at key points in the race.</p>
+      <h3>Predict from race mode</h3>
+      <p>Enter a recent race result — any distance from 5K to marathon — and select the distance you want to predict. The calculator uses the Riegel formula (T2 = T1 x (D2/D1)^1.06), the same method used by Runner's World and most serious race prediction tools. It accounts for the natural slowdown in pace as distance increases.</p>
+      <h3>Understanding your splits</h3>
+      <p>Splits show your predicted time at key checkpoints. For a marathon, you will see your expected time at 5K, 10K, the halfway point, 30K, and the finish. Use these as reference points on race day — if you are running significantly ahead of your split times in the first half, you may be going out too fast.</p>
+      <h3>How accurate is the prediction?</h3>
+      <p>The Riegel formula is well-calibrated for distances from 5K to half marathon. For full marathon predictions, accuracy depends heavily on your training mileage. Runners who have trained specifically for the marathon will often perform closer to the prediction; those stepping up from shorter distances may find the actual time is 5 to 15 minutes slower than predicted.</p>
+      <h3>Common race distances</h3>
+      <p>5K = 5 kilometres · 10K = 10 kilometres · Half marathon = 21.1 kilometres (13.1 miles) · Marathon = 42.2 kilometres (26.2 miles)</p>
+    </section>
+
+    <footer>
+      <p>© 2025 marathonpacecalc.com · <a href="mailto:hello@marathonpacecalc.com">Contact</a> · Free running tool, no sign-up required</p>
+    </footer>
+  </div>
+
+  <script>
+    var currentDist=42.195,currentDistLabel='Marathon',prevDist=5;
+    function setMode(m){document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',(m==='pace'&&i===0)||(m==='predict'&&i===1));});document.getElementById('mode-pace').style.display=m==='pace'?'block':'none';document.getElementById('mode-predict').style.display=m==='predict'?'block':'none';document.getElementById('results').classList.remove('show');}
+    function selectDist(btn,label,km){currentDist=km;currentDistLabel=label;btn.closest('.dist-grid').querySelectorAll('.dist-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');}
+    function selectPrev(btn,km){prevDist=km;btn.closest('.dist-grid').querySelectorAll('.dist-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');}
+    function pad(n){return n<10?'0'+n:''+n;}
+    function fmtTime(s){var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=Math.round(s%60);if(sec===60){sec=0;m++;}if(m===60){m=0;h++;}return h>0?h+':'+pad(m)+':'+pad(sec):m+':'+pad(sec);}
+    function paceStr(spk){var mk=Math.floor(spk/60),sk=Math.round(spk%60);if(sk===60){sk=0;mk++;}var spm=spk*1.60934,mm=Math.floor(spm/60),sm=Math.round(spm%60);if(sm===60){sm=0;mm++;}return 'Avg pace: '+mk+':'+pad(sk)+' /km  ·  '+mm+':'+pad(sm)+' /mi';}
+    function showResults(totalSecs,distKm,distLabel,spk){
+      document.getElementById('res-time').textContent=fmtTime(totalSecs);
+      document.getElementById('res-pace').textContent=paceStr(spk);
+      var splits=distKm>=42?[{d:'5K',km:5},{d:'10K',km:10},{d:'Half',km:21.0975},{d:'30K',km:30},{d:'Finish',km:42.195}]:distKm>=21?[{d:'5K',km:5},{d:'10K',km:10},{d:'15K',km:15},{d:'Finish',km:21.0975}]:distKm>=10?[{d:'5K',km:5},{d:'Finish',km:10}]:[{d:'1K',km:1},{d:'2K',km:2},{d:'3K',km:3},{d:'4K',km:4},{d:'Finish',km:5}];
+      document.getElementById('splits-grid').innerHTML=splits.map(function(sp){return '<div class="split"><div class="split-dist">'+sp.d+'</div><div class="split-time">'+fmtTime(sp.km*spk)+'</div></div>';}).join('');
+      var tips={Marathon:'<strong>Pacing tip:</strong> Start 10–15 sec/km slower than goal pace for the first 10K. Patience in the first half is what wins a marathon.',Half:'<strong>Pacing tip:</strong> Run the first 10K at goal pace, then assess. A negative split (faster second half) is the hallmark of a well-run half marathon.','10K':'<strong>Pacing tip:</strong> Hold back for the first 3K, settle into goal pace through 7K, then race the final 3K.','5K':'<strong>Pacing tip:</strong> After a controlled first kilometre, commit fully. You should feel uncomfortable from 2K onwards.'};
+      document.getElementById('res-tip').innerHTML=tips[distLabel]||tips.Marathon;
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+    function calcPace(){document.getElementById('err-pace').classList.remove('show');var mins=parseFloat(document.getElementById('p-min').value),secs=parseFloat(document.getElementById('p-sec').value)||0,unit=document.getElementById('p-unit').value;if(isNaN(mins)||mins<2||secs<0||secs>=60){document.getElementById('err-pace').classList.add('show');return;}var spk=(mins*60+secs)*(unit==='mi'?1/1.60934:1);showResults(spk*currentDist,currentDist,currentDistLabel,spk);}
+    function calcPredict(){document.getElementById('err-predict').classList.remove('show');var h=parseFloat(document.getElementById('r-h').value)||0,m=parseFloat(document.getElementById('r-m').value)||0,s=parseFloat(document.getElementById('r-s').value)||0,total=h*3600+m*60+s;if(total<60){document.getElementById('err-predict').classList.add('show');return;}var tkm=parseFloat(document.getElementById('target-dist').value),dl=tkm>=42?'Marathon':tkm>=21?'Half':tkm>=10?'10K':'5K',pred=total*Math.pow(tkm/prevDist,1.06),spk=pred/tkm;showResults(pred,tkm,dl,spk);}
+  </script>
+</body>
+</html>
